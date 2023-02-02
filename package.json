@@ -9,7 +9,7 @@
   "scripts": {
     "res:build" : "rescript",
     "res:clean" : "rescript clean",
-    "res:dev" : "rescript build -w",
+    "res:dev" : "rescript build -w"
   },
   "keywords": [
     "rescript",
