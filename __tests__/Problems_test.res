@@ -1,3 +1,16 @@
 open Ava
+open Problem
 
-test("it Works!", t => {t->Assert.pass()})
+test("a function that returns the tail of a list", t => {
+
+    let mylist = list{"a", "b", "c", "d"}
+    
+    t->Assert.is(One.last(mylist), Some("d"), (),)
+})
+
+test("a function that returns the last two elements of a list", t => {
+
+    let mylist = list{"a", "b", "c", "d"}
+    
+    t->Assert.deepEqual(Two.lasttwo(mylist), Some("c", "d"), (),)
+})
