@@ -1,0 +1,21 @@
+{
+  "name": "rescript-problems",
+  "version": "0.1.0",
+  "description": "ReScript port of Ocaml's 99 Problems",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamweti/rescript-problems.git"
+  },
+  "keywords": [
+    "ReScript",
+    "99",
+    "Problems",
+    "Ocaml"
+  ],
+  "author": "Kamweti Muriuki",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/kamweti/rescript-problems/issues"
+  },
+  "homepage": "https://github.com/kamweti/rescript-problems#readme"
+}
