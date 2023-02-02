@@ -17,3 +17,18 @@ module Two = {
         }
     }
 }
+module Three = {
+    let rec nth = (mylist, index) => {
+        switch index {
+            | x if (x < 0) => None
+            | x if x > mylist->Belt.List.length => None
+            | x if x == 0 => mylist->Belt.List.head
+            | _ => {
+                switch mylist {
+                | list{} => None
+                | list{_, ...rest} => nth(rest, index -1)
+                }
+            }
+        }
+    }
+}
