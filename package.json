@@ -6,16 +6,24 @@
     "type": "git",
     "url": "git+https://github.com/kamweti/rescript-problems.git"
   },
+  "scripts": {
+    "res:build" : "rescript",
+    "res:clean" : "rescript clean",
+    "res:dev" : "rescript build -w",
+  },
   "keywords": [
-    "ReScript",
+    "rescript",
     "99",
-    "Problems",
-    "Ocaml"
+    "problems",
+    "ocaml"
   ],
   "author": "Kamweti Muriuki",
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/kamweti/rescript-problems/issues"
   },
-  "homepage": "https://github.com/kamweti/rescript-problems#readme"
+  "homepage": "https://github.com/kamweti/rescript-problems#readme",
+  "dependencies": {
+    "rescript": "^10.1.2"
+  }
 }
