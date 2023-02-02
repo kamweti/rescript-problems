@@ -1,14 +1,22 @@
 {
     "name": "rescript-problems",
-    "sources": {
-      "dir": "src",
-      "subdirs": true
-    },
+    "sources": [
+      {
+        "dir": "src",
+        "subdirs": true
+      },
+      {
+        "dir": "__tests__",
+        "type": "dev"
+      }
+    ],
     "package-specs": {
       "module": "commonjs",
       "in-source": true
     },
     "suffix": ".bs.js",
     "bsc-flags": ["-open Belt"],
-    "bs-dependencies": []
+    "bs-dependencies": [
+      "@dzakh/rescript-ava"
+    ]
   }

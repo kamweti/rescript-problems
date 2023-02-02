@@ -3,3 +3,4 @@ node_modules
 .bsb.lock
 **/*.bs.js
 **/*.mjs
+lib

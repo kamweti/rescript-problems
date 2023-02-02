@@ -7,9 +7,10 @@
     "url": "git+https://github.com/kamweti/rescript-problems.git"
   },
   "scripts": {
-    "res:build" : "rescript",
-    "res:clean" : "rescript clean",
-    "res:dev" : "rescript build -w"
+    "res:build": "rescript",
+    "res:clean": "rescript clean",
+    "res:dev": "rescript build -w",
+    "test": "ava"
   },
   "keywords": [
     "rescript",
@@ -25,5 +26,15 @@
   "homepage": "https://github.com/kamweti/rescript-problems#readme",
   "dependencies": {
     "rescript": "^10.1.2"
+  },
+  "devDependencies": {
+    "@dzakh/rescript-ava": "^2.1.0",
+    "ava": "5.1.x"
+  },
+  "ava": {
+    "files": [
+      "__tests__/**/*_test.mjs",
+      "__tests__/**/*_test.bs.js"
+    ]
   }
 }
