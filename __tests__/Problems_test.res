@@ -49,12 +49,21 @@ test("is list a reverse of itself (palindrome)", t => {
 test("flattening a nested list in order", t => {
     
     let tree = list{
-        list{},
         list{"a"},
+        list{},
         list{"b", "c"}
     }
     
     let subject = list{"a", "b", "c"}
 
     t->Assert.deepEqual(Seven.flatten(tree), subject, (), )
+})
+
+test("eliminating consecutive duplicates in a list", t => {
+    
+    let duplicated = list{"a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e"}
+    
+    let distinct = list{"a", "b", "c", "a", "d", "e"}
+
+    t->Assert.deepEqual(Eight.uniquify(duplicated), distinct, (), )
 })

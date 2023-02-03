@@ -79,4 +79,15 @@ module Seven = {
             loop(tree, list{})
     }
 }
+
+module Eight = {
+    let rec uniquify = dupe_list =>
+        switch dupe_list {
+        | list{x, y, ...rest} => 
+            switch (x == y) {
+            | true => uniquify(list{x, ...rest})
+            | false => list{x, ...uniquify(list{y, ...rest})}
+            }
+        | _ as z => z
+        }
 }
