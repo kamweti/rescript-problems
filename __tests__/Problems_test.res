@@ -24,3 +24,37 @@ test("a function that returns nth element of a list", t => {
     t->Assert.is(Three.nth(mylist, 2), Some("c"), (),)
     t->Assert.is(Three.nth(mylist, 0), Some("a"), (),)
 })
+
+test("the length of a list", t => {
+    let mylist = list{"a", "b", "c"}
+
+    t->Assert.is(Four.length(mylist), 3, (),)
+    t->Assert.is(Four.length(list{}), 0, (),)
+})
+
+test("reversing a list", t => {
+    let mylist = list{"a", "b", "c"}
+
+    t->Assert.deepEqual(Five.reverse(mylist), list{"c", "b", "a"}, (),)
+})
+
+test("is list a reverse of itself (palindrome)", t => {
+    let subject = list{"a", "b", "c"}
+
+    t->Assert.isFalse(Six.isReverse(~claim=list{}, subject), (),)
+    t->Assert.isFalse(Six.isReverse(~claim=list{"c", "b"}, subject), (),)
+    t->Assert.isTrue(Six.isReverse(~claim=list{"c", "b", "a"}, subject), (),)
+})
+
+test("flattening a nested list in order", t => {
+    
+    let tree = list{
+        list{},
+        list{"a"},
+        list{"b", "c"}
+    }
+    
+    let subject = list{"a", "b", "c"}
+
+    t->Assert.deepEqual(Seven.flatten(tree), subject, (), )
+})
