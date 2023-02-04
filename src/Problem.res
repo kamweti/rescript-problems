@@ -91,3 +91,67 @@ module Eight = {
         | _ as z => z
         }
 }
+
+module Nine = {
+    let pack = dupe_list => {
+
+        let rec loop = (dupe_list, current, acc) => {
+            switch dupe_list {
+            | list{} => acc
+            | list{x} => list{list{x, ...current}, ...acc}
+            | list{x, y, ...rest} => 
+                switch (x == y) {
+                | true => {
+
+                    loop(
+                        list{y, ...rest},
+                        list{x, ...current},
+                        acc
+                    )
+                }
+                | false => 
+                    loop(
+                        list{y, ...rest},
+                        list{},
+                        list{list{x, ...current}, ...acc}
+                    )
+                }
+            }
+        }
+
+        loop(dupe_list, list{}, list{})->Prelude.reverse
+    }
+}
+
+module Ten = {
+    let run_length_encode = list => {
+        let rec loop = (l, counter, acc) => {
+
+            switch l {
+            | list{} => acc
+            | list{x} => list{(counter + 1, x), ...acc}
+            | list{x, y, ...rest} => {
+
+                switch (x == y) {
+                | true => {
+
+                    loop(
+                        list{y, ...rest},
+                        counter + 1,
+                        acc
+                    )
+                }
+                | false => 
+                    loop(
+                        list{y, ...rest},
+                        0,
+                        list{(counter + 1, x), ...acc}
+                    )
+                }
+            }
+            }
+        }
+
+        loop(list, 0, list{})->Prelude.reverse
+    }
+}

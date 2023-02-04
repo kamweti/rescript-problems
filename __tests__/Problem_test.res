@@ -59,11 +59,27 @@ test("flattening a nested list in order", t => {
     t->Assert.deepEqual(Seven.flatten(tree), subject, (), )
 })
 
-test("eliminating consecutive duplicates in a list", t => {
+test("eliminating _consecutive_ duplicates in a list", t => {
     
     let duplicated = list{"a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e"}
     
     let distinct = list{"a", "b", "c", "a", "d", "e"}
 
     t->Assert.deepEqual(Eight.uniquify(duplicated), distinct, (), )
+})
+
+test("pack consecutive duplicates in a list to sublists", t => {
+    
+    let duplicated = list{"a", "a", "a", "a", "b", "c", "c", "a", "a"}
+    let packed = list{list{"a", "a", "a", "a"}, list{"b"}, list{"c", "c"}, list{"a", "a"}}
+
+    t->Assert.deepEqual(Nine.pack(duplicated), packed, (), )
+})
+
+test("run length encoding of a list", t => {
+
+    let list = list{"W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","B","B","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W"}
+    let encoded = list{(12, "W"), (1, "B"), (12, "W"), (3, "B"), (24, "W"), (1, "B"), (14, "W")}
+
+    t->Assert.deepEqual(Ten.run_length_encode(list), encoded, (), )
 })
