@@ -76,7 +76,7 @@ test("pack consecutive duplicates in a list to sublists", t => {
     t->Assert.deepEqual(Nine.pack(duplicated), packed, (), )
 })
 
-test("run length encoding of a list", t => {
+test("run length encoding of consecutive duplicates in a list", t => {
 
     let list = list{"W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","B","B","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W"}
     let encoded = list{(12, "W"), (1, "B"), (12, "W"), (3, "B"), (24, "W"), (1, "B"), (14, "W")}
