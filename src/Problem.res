@@ -1,22 +1,24 @@
 module Prelude = {
-    let reverse = list => {
+    module List = {
+        let reverse = list => {
 
-        let rec loop = (list, reversed_list) => switch list {
-        | list{} => reversed_list
-        | list{head, ...rest} => loop(rest, list{head, ...reversed_list})
+            let rec loop = (list, reversed_list) => switch list {
+            | list{} => reversed_list
+            | list{head, ...rest} => loop(rest, list{head, ...reversed_list})
+            }
+
+            loop(list, list{})
         }
 
-        loop(list, list{})
-    }
+        let length = list => {
+            
+            let rec loop = (list, length) => switch list {
+            | list{} => length
+            | list{_, ...rest} => loop(rest, length + 1)
+            }
 
-    let length = list => {
-        
-        let rec loop = (list, length) => switch list {
-        | list{} => length
-        | list{_, ...rest} => loop(rest, length + 1)
+            loop(list, 0)
         }
-
-        loop(list, 0)
     }
 }
 
@@ -43,7 +45,7 @@ module Three = {
     let rec nth = (mylist, index) => {
         switch index {
             | x if (x < 0) => None
-            | x if x > mylist->Prelude.length => None
+            | x if x > mylist->Prelude.List.length => None
             | x if x == 0 => mylist->Belt.List.head
             | _ => {
                 switch mylist {
@@ -56,16 +58,16 @@ module Three = {
 }
 
 module Four = {
-    let length = list => list->Prelude.length
+    let length = list => list->Prelude.List.length
 }
 
 module Five = {
-    let reverse = list => list->Prelude.reverse
+    let reverse = list => list->Prelude.List.reverse
 }
 
 module Six = {
     let isReverse = (subject, ~claim) => 
-        subject->Prelude.reverse->Belt.List.eq(claim, (x, y) => x == y)
+        subject->Prelude.List.reverse->Belt.List.eq(claim, (x, y) => x == y)
 }
 
 module Seven = {
@@ -119,7 +121,7 @@ module Nine = {
             }
         }
 
-        loop(dupe_list, list{}, list{})->Prelude.reverse
+        loop(dupe_list, list{}, list{})->Prelude.List.reverse
     }
 }
 
@@ -152,6 +154,45 @@ module Ten = {
             }
         }
 
-        loop(list, 0, list{})->Prelude.reverse
+        loop(list, 0, list{})->Prelude.List.reverse
+    }
+}
+
+module Eleven = {
+    // if an element has no duplicates, it is simply copied into the result list.
+    // since ReScript lists contain elements of the same type
+    // we need to define a type to hold both single & multiple value lists
+
+    exception InvalidCount
+    type list_length<'a> = 
+        | One('a)
+        | Many(int, 'a)
+
+    let run_length_encode_modified = list => 
+        Ten.run_length_encode(list)->List.map(tuple => 
+            switch tuple {
+            | (1, x) => One(x)
+            | (count, x) if (count > 1) => Many(count, x)
+            | _ => raise(InvalidCount)
+            }
+        )
+}
+
+module Twelve = {
+    open Eleven
+    
+    let decode_run_length = encoded_list => {
+        let rec loop = (list, acc) => {
+            switch list {
+            | list{} => acc
+            | list{head, ...rest} => 
+                switch head {
+                | One(x) => loop(rest, list{x, ...acc})
+                | Many(count, x) => loop(rest, Belt.List.make(count, x)->Belt.List.concat(acc))
+                }
+            }
+        }
+
+        loop(encoded_list, list{})->Belt.List.reverse
     }
 }

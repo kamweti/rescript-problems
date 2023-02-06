@@ -83,3 +83,38 @@ test("run length encoding of consecutive duplicates in a list", t => {
 
     t->Assert.deepEqual(Ten.run_length_encode(list), encoded, (), )
 })
+
+test("modify run length encoding", t => {
+    open Eleven
+
+    let list = list{"W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","B","B","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W"}
+    let encoded = list{
+        Many(12, "W"), 
+        One("B"), 
+        Many(12, "W"), 
+        Many(3, "B"), 
+        Many(24, "W"), 
+        One("B"), 
+        Many(14, "W")
+    }
+    t->Assert.deepEqual(run_length_encode_modified(list), encoded, (), )
+})
+
+test("decode a run length encoded list", t => {
+    open Eleven
+    open Twelve
+
+    let list = list{"W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","B","B","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W"}
+
+    let encoded = list{
+        Many(12, "W"), 
+        One("B"), 
+        Many(12, "W"), 
+        Many(3, "B"), 
+        Many(24, "W"), 
+        One("B"), 
+        Many(14, "W")
+    }
+
+    t->Assert.deepEqual(decode_run_length(encoded), list, (), )
+})
