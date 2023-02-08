@@ -193,6 +193,106 @@ module Twelve = {
             }
         }
 
-        loop(encoded_list, list{})->Belt.List.reverse
+        loop(encoded_list, list{})->Prelude.List.reverse
+    }
+}
+
+module Thirteen = {
+    open Eleven
+    
+    let run_length_encode_direct = list => {
+        
+        let rle = (counter, x) => 
+            switch counter {
+            | c if c == 1 => One(x)
+            | c if c > 1  => Many(c, x)
+            | _ => raise(InvalidCount)
+            }
+
+        let rec loop = (l, counter, acc) => {
+            
+            switch l {
+            | list{} => acc
+            | list{x} => list{rle(counter + 1, x), ...acc}
+            | list{x, y, ...rest} => {
+
+                switch (x == y) {
+                | true => {
+
+                    loop(
+                        list{y, ...rest},
+                        counter + 1,
+                        acc
+                    )
+                }
+                | false => 
+                    loop(
+                        list{y, ...rest},
+                        0,
+                        list{rle(counter + 1, x), ...acc}
+                    )
+                }
+            }
+            }
+        }
+
+        loop(list, 0, list{})->Prelude.List.reverse
+    }
+}
+
+module Fourteen = {
+    let duplicate = list => {
+        let rec loop = (l, acc) =>
+            switch l {
+            | list{} => acc
+            | list{head, ...rest} => loop(rest, list{head, head, ...acc})
+            }
+        
+        loop(list, list{})->Prelude.List.reverse
+    }
+}
+
+module Fifteen = {
+    let duplicate = (list, times) => {
+        let rec loop = (l, acc) =>
+            switch l {
+            | list{} => acc
+            | list{head, ...rest} => loop(rest, Belt.List.make(times, head)->Belt.List.concat(acc))
+            }
+        
+        loop(list, list{})->Prelude.List.reverse
+    }
+}
+
+module Sixteen = {
+    let drop = (list, nth) => {
+        let rec loop = (l, counter, acc) =>
+            switch l {
+            | list{} => acc
+            | list{head, ...rest} => 
+                let acc = (counter == nth) ? acc : list{head, ...acc}
+                loop(rest, (counter + 1), acc)
+            }
+        
+        loop(list, 1, list{})->Prelude.List.reverse
+    }
+}
+
+module Seventeen = {
+    let split = (list, n) => {
+
+        let rec loop = (list, i, acc) =>
+            switch list {
+            | list{} => list{acc->Prelude.List.reverse, list{}}
+            | list{head, ...rest} => 
+                if (i == 0) {
+                    list{acc->Prelude.List.reverse, list}
+                } else {
+                    loop(rest, (i - 1), list{head, ...acc})
+                }
+            }   
+
+        loop(list, n, list{})
+        
     }
 }

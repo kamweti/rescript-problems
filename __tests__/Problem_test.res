@@ -118,3 +118,52 @@ test("decode a run length encoded list", t => {
 
     t->Assert.deepEqual(decode_run_length(encoded), list, (), )
 })
+
+test("run length encode direct without creating sublists", t => {
+    open Eleven
+
+    let list = list{"W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","B","B","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","W","B","W","W","W","W","W","W","W","W","W","W","W","W","W","W"}
+    let encoded = list{
+        Many(12, "W"), 
+        One("B"), 
+        Many(12, "W"), 
+        Many(3, "B"), 
+        Many(24, "W"), 
+        One("B"), 
+        Many(14, "W")
+    }
+    t->Assert.deepEqual(Thirteen.run_length_encode_direct(list), encoded, (), )
+})
+
+test("duplicate elements in a list", t => {
+    let list = list{"a","b","c","d","e","f"}
+
+    let duplicated = list{"a","a", "b", "b","c", "c","d", "d","e", "e","f", "f"}
+    t->Assert.deepEqual(Fourteen.duplicate(list), duplicated, (), )
+})
+
+test("duplicate elements in a list x times", t => {
+    let list = list{"a","b","c","d","e","f"}
+
+    let duplicated = list{"a","a", "b", "b","c", "c","d", "d","e", "e","f", "f"}
+    t->Assert.deepEqual(Fifteen.duplicate(list, 2), duplicated, (), )
+})
+
+test("drop every nth element from a list", t => {
+    let list = list{"a","b","c","d","e","f"}
+    let dropped = list{"a","b",/*"c",*/ "d","e","f"}
+
+    t->Assert.deepEqual(Sixteen.drop(list, 3), dropped, (), )
+})
+
+test("split a list into two parts given the length of the first part", t => {
+    let list = list{"a","b","c","d","e","f"}
+    let split = list{list{"a","b","c", "d"}, list{"e", "f"}}
+
+    t->Assert.deepEqual(Seventeen.split(list, 4), split, (), )
+
+    let list = list{"a","b","c","d","e","f"}
+    let split = list{list{"a","b","c", "d", "e", "f"}, list{}}
+
+    t->Assert.deepEqual(Seventeen.split(list, 6), split, (), )
+})
