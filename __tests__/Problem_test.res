@@ -167,3 +167,57 @@ test("split a list into two parts given the length of the first part", t => {
 
     t->Assert.deepEqual(Seventeen.split(list, 6), split, (), )
 })
+
+test("extract a slice from a list", t => {
+    let list = list{"a","b","c","d","e","f"}
+
+    t->Assert.deepEqual(Eighteen.slice(list, 0, 20), list, (), )
+    t->Assert.deepEqual(Eighteen.slice(list, 0, 2), list{"a", "b", "c"}, (), )
+
+    t->Assert.deepEqual(Eighteen.slice(list, -1, 2), list{}, (), )
+})
+
+test("shift a List n places to the left starting at index zero", t => {
+    let list = list{"a","b","c","d","e","f"}
+
+    t->Assert.deepEqual(Nineteen.shiftItemsToTheLeft(list, 20), list, (), )
+    t->Assert.deepEqual(Nineteen.shiftItemsToTheLeft(list, 0), list, (), )
+    t->Assert.deepEqual(Nineteen.shiftItemsToTheLeft(list, -1), list, (), )
+
+    t->Assert.deepEqual(Nineteen.shiftItemsToTheLeft(list, 6), list, (), )
+    t->Assert.deepEqual(Nineteen.shiftItemsToTheLeft(list, 5), list{"f", "a","b","c","d","e"}, (), )
+    t->Assert.deepEqual(Nineteen.shiftItemsToTheLeft(list, 2), list{"c","d","e","f","a","b"}, (), )
+})
+
+test("insert an element at a given position in a list", t => {
+    let list = list{"a","b","c","d","e","f"}
+
+    t->Assert.deepEqual(Twenty.insertInPlace(list, ~pos=-1, ~item="z"), list, (), )
+    t->Assert.deepEqual(Twenty.insertInPlace(list, ~pos=20, ~item="z"), list{"a","b","c","d","e","f","z"}, (), )
+    t->Assert.deepEqual(Twenty.insertInPlace(list, ~pos=0, ~item="z"), list{"z","a", "b","c","d","e","f"}, (), )
+    t->Assert.deepEqual(Twenty.insertInPlace(list, ~pos=5, ~item="z"), list{"a","b","c","d","e","z","f"}, (), )
+    t->Assert.deepEqual(Twenty.insertInPlace(list, ~pos=6, ~item="z"), list{"a","b","c","d","e","f","z"}, (), )
+    t->Assert.deepEqual(Twenty.insertInPlace(list, ~pos=1, ~item="z"), list{"a", "z", "b","c","d","e","f"}, (), )
+})
+
+test("create a list of integers within a given range", t => {
+    t->Assert.deepEqual(TwentyOne.listRange(~start=4, ~end=0), list{}, (), )
+    t->Assert.deepEqual(TwentyOne.listRange(~start=4, ~end=6), list{4, 5, 6}, (), )
+    t->Assert.deepEqual(TwentyOne.listRange(~start=-21, ~end=-19), list{-21, -20, -19}, (), )
+    t->Assert.deepEqual(TwentyOne.listRange(~start=-21, ~end=-19), list{-21, -20, -19}, (), )
+})
+
+test("lottery: draw n different random numbers from a set 1..k numbers", t => {
+    let stack = [41, 82, 3, 4, 5, 6, 7, 8, 9, 19, 22]
+
+    t->Assert.is(TwentyThree.lottery(~sampleCount=5, ~stack)->Js.Array.length, 5, (), )
+    t->Assert.is(TwentyThree.lottery(~sampleCount=-5, ~stack)->Js.Array.length, 0, (), )
+})
+
+test("shuffle an array", t => {
+    let stack = [41, 82, 3, 4, 5, 6, 7, 8, 9, 19, 22]
+
+    t->Assert.deepEqual(TwentyFour.shuffle([]), [], (), )
+    t->Assert.deepEqual(TwentyFour.shuffle(["a"]), ["a"], (), )
+    t->Assert.is(TwentyFour.shuffle(stack)->Js.Array.length, 11, (), )
+})

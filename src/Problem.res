@@ -20,6 +20,16 @@ module Prelude = {
             loop(list, 0)
         }
     }
+
+    module Array = {
+        let pickRandom : (array<'a>) => (array<'a>, array<'a>) =
+            (stack) => {
+                let index = Js.Math.random_int(0, stack->Js.Array.length)
+                let drawn = Js.Array.removeCountInPlace(~pos=index, ~count=1, stack)
+
+                (drawn, stack)
+            }
+    }
 }
 
 module One = {
@@ -295,4 +305,178 @@ module Seventeen = {
         loop(list, n, list{})
         
     }
+}
+
+module Eighteen = {
+    let slice : (list<'a>, int, int) => list<'a> =
+        (list, start, end) => {
+
+            let rec loop = (list, i, acc) => {
+                switch list {
+                    | list{} => acc
+                    | list{head, ...rest} => 
+                        switch i {
+                            | i if (i < start) => loop(rest, (i+1), acc)
+                            | i if (i >= start && i <= end) => 
+                                loop(rest, (i + 1), list{head, ...acc})
+                            | _ => acc
+                        }
+
+                }
+            }
+
+            switch (start, end) {
+                | (start, end) if (start < 0 || end < 0) => list{}
+                | _ => loop(list, 0, list{})->Prelude.List.reverse
+            }
+        }
+}
+
+module Nineteen = {
+    let shiftItemsToTheLeft : (list<'a>, int)  => list<'a> =
+        (list, count) => {
+
+            let rec loop = (list, i, acc) => {
+                switch list {
+                    | list{} => acc->Prelude.List.reverse
+                    | list{head, ...rest} => 
+                        switch i {
+                            | i if (i < count) => 
+                                loop(rest, (i+1), list{head, ...acc})
+                            | _ => 
+                                list{head, ...rest}->Belt.List.concat(acc->Prelude.List.reverse)
+                        }
+
+                }
+            }
+
+            switch count {
+                | count if (count > 0 && count < list->Prelude.List.length) => 
+                    loop(list, 0, list{})
+                | _ => list
+            }
+        }
+}
+
+module Twenty = {
+
+    let insertInPlaceAlt : (list<'a>, ~pos: int, ~item: 'a) => list<'a> =
+        (list, ~pos, ~item) => {
+
+            let rec loop = (list, i, acc) => {
+                switch list {
+                    | list{} => acc
+                    | list{head, ...rest} => 
+                        if ( i == pos ) {
+                            list{...acc, item}->Belt.List.concat(list{head, ...rest})
+                        } else {
+                            loop(rest, (i+1), list{...acc, head})
+                        }
+                }
+            }
+
+            switch pos {
+                | pos if (pos >= 0) => 
+                    if (pos < Prelude.List.length(list)) {
+                        loop(list, 0, list{})
+                    } else {
+                        list{...list, item}
+                    }
+                | _ => list
+            }
+        }
+
+    let rec insertInPlace : (list<'a>, ~pos: int, ~item: 'a) => list<'a> =
+        (list, ~pos, ~item) => {
+            
+            switch list {
+                | list if (pos < 0) => list
+                | list if (pos > list->Prelude.List.length) => list{...list, item}
+                | list{} => list{item}
+                | list{head, ...rest} => 
+                    if (pos == 0) {
+                        list{item, head, ...rest}
+                    } else {
+                        list{
+                            head, 
+                            ...insertInPlace(
+                                rest, 
+                                ~pos= (pos - 1), 
+                                ~item=item
+                            )
+                        }
+                    }
+            }
+        }
+}
+
+module TwentyOne = {
+    let rec listRange : (~start: int, ~end: int) => list<int> =
+        (~start, ~end) => {
+            
+            switch start {
+                | start if (start > end) => list{}
+                | start if (start == end) => list{start}
+                | _ => list{
+                    start, 
+                    ...listRange(
+                        ~start=(start + 1),
+                        ~end
+                    )
+                }
+            }
+        }
+    
+    // tail recursive version
+    let listRangeAccum : (~start: int, ~end: int) => list<int> =
+        (~start, ~end) => {
+            
+            let rec loop = (start, end, accum) => {
+                switch start {
+                    | start if (start > end) => list{}
+                    | start if (start == end) => list{...accum, start}
+                    | _ => loop((start+1), end, list{...accum, start})
+                }
+            }
+
+            loop(start, end, list{})
+
+        }
+}
+
+module TwentyThree = {
+
+    let rec lottery : (~sampleCount: int, ~stack: array<'a>) => array<'a> =
+        (~sampleCount, ~stack) => {
+
+            switch stack {
+                | [] => []
+                | [x] => [x]
+                | _ => 
+                    if (sampleCount > 0) {
+                        let (winning_set, remaining) = Prelude.Array.pickRandom(stack)
+                        winning_set
+                            ->Js.Array.concat(
+                                lottery(~sampleCount=(sampleCount - 1), ~stack=remaining)
+                            )
+                    } else {
+                        []
+                    }
+            }
+        }
+}
+
+module TwentyFour = {
+
+    let rec shuffle : (array<'a>) => array<'a> = 
+        (stack) => {
+
+            switch stack {
+                | [] => []
+                | [x] => [x]
+                | _ => 
+                    let (winning_set, remaining) = Prelude.Array.pickRandom(stack)
+                    winning_set->Js.Array.concat(shuffle(remaining))
+            }
+        }
 }
