@@ -221,4 +221,12 @@ test("shuffle an array", t => {
     t->Assert.deepEqual(TwentyThree.shuffle(["a"]), ["a"], (), )
     t->Assert.is(TwentyThree.shuffle(stack)->Js.Array.length, 11, (), )
 })
+
+test("generate combinations of k _distinct_ objects chosen from n elements of a list", t => {
+
+    let list = list{"a","b","c","d","e","f"}
+
+    Js.log(TwentyFour.generateCombinations(~stack=list, ~sampleCount=3)->Belt.List.toArray)
+    
+    t->Assert.deepEqual(TwentyFour.generateCombinations(~stack=list, ~sampleCount=3), list{}, (), )
 })

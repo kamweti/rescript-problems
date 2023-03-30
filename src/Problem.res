@@ -480,3 +480,23 @@ module TwentyThree = {
             }
         }
 }
+
+module TwentyFour = {
+    
+    let rec generateCombinations : (~stack: list<'a>, ~sampleCount: int) => list<list<'a>> = 
+        (~stack, ~sampleCount) => {
+
+            switch stack {
+                | list{} => list{}
+                | list{x} => list{list{x}}
+                | _ if (sampleCount < 1) => list{}
+                | _ if (sampleCount > stack->Prelude.List.length) => list{}
+                | stack if (sampleCount == stack->Prelude.List.length) => list{stack}
+                | list{head, ...rest} => 
+                    
+                    rest
+                        ->Belt.List.map(x => list{head, x})
+                        ->Belt.List.concat(generateCombinations(~stack=rest, ~sampleCount))
+            }
+        }
+}
