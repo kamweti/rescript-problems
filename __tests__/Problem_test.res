@@ -210,14 +210,15 @@ test("create a list of integers within a given range", t => {
 test("lottery: draw n different random numbers from a set 1..k numbers", t => {
     let stack = [41, 82, 3, 4, 5, 6, 7, 8, 9, 19, 22]
 
-    t->Assert.is(TwentyThree.lottery(~sampleCount=5, ~stack)->Js.Array.length, 5, (), )
-    t->Assert.is(TwentyThree.lottery(~sampleCount=-5, ~stack)->Js.Array.length, 0, (), )
+    t->Assert.is(TwentyTwo.lottery(~sampleCount=5, ~stack)->Js.Array.length, 5, (), )
+    t->Assert.is(TwentyTwo.lottery(~sampleCount=-5, ~stack)->Js.Array.length, 0, (), )
 })
 
 test("shuffle an array", t => {
     let stack = [41, 82, 3, 4, 5, 6, 7, 8, 9, 19, 22]
 
-    t->Assert.deepEqual(TwentyFour.shuffle([]), [], (), )
-    t->Assert.deepEqual(TwentyFour.shuffle(["a"]), ["a"], (), )
-    t->Assert.is(TwentyFour.shuffle(stack)->Js.Array.length, 11, (), )
+    t->Assert.deepEqual(TwentyThree.shuffle([]), [], (), )
+    t->Assert.deepEqual(TwentyThree.shuffle(["a"]), ["a"], (), )
+    t->Assert.is(TwentyThree.shuffle(stack)->Js.Array.length, 11, (), )
+})
 })

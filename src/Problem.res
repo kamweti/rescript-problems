@@ -444,7 +444,7 @@ module TwentyOne = {
         }
 }
 
-module TwentyThree = {
+module TwentyTwo = {
 
     let rec lottery : (~sampleCount: int, ~stack: array<'a>) => array<'a> =
         (~sampleCount, ~stack) => {
@@ -466,7 +466,7 @@ module TwentyThree = {
         }
 }
 
-module TwentyFour = {
+module TwentyThree = {
 
     let rec shuffle : (array<'a>) => array<'a> = 
         (stack) => {
