@@ -210,8 +210,8 @@ test("create a list of integers within a given range", t => {
 test("lottery: draw n different random numbers from a set 1..k numbers", t => {
     let stack = [41, 82, 3, 4, 5, 6, 7, 8, 9, 19, 22]
 
-    t->Assert.is(TwentyTwo.lottery(~sampleCount=5, ~stack)->Js.Array.length, 5, (), )
-    t->Assert.is(TwentyTwo.lottery(~sampleCount=-5, ~stack)->Js.Array.length, 0, (), )
+    t->Assert.is(TwentyTwo.lottery(~count=5, ~stack)->Js.Array.length, 5, (), )
+    t->Assert.is(TwentyTwo.lottery(~count=-5, ~stack)->Js.Array.length, 0, (), )
 })
 
 test("shuffle an array", t => {
@@ -225,8 +225,10 @@ test("shuffle an array", t => {
 test("generate combinations of k _distinct_ objects chosen from n elements of a list", t => {
 
     let list = list{"a","b","c","d","e","f"}
-
-    Js.log(TwentyFour.generateCombinations(~stack=list, ~sampleCount=3)->Belt.List.toArray)
     
-    t->Assert.deepEqual(TwentyFour.generateCombinations(~stack=list, ~sampleCount=3), list{}, (), )
+    t->Assert.deepEqual(TwentyFour.combinations(~stack=list, ~count=10), list{list}, (), )
+    t->Assert.deepEqual(TwentyFour.combinations(~stack=list, ~count=-5), list{list{}}, (), )
+    t->Assert.deepEqual(TwentyFour.combinations(~stack=list, ~count=list->Prelude.List.length), list{list}, (), )
+    t->Assert.is(TwentyFour.combinations(~stack=list, ~count=2)->Prelude.List.length, 15, (), )
+    t->Assert.is(TwentyFour.combinations(~stack=list, ~count=5)->Prelude.List.length, 6, (), )
 })

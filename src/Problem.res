@@ -446,18 +446,18 @@ module TwentyOne = {
 
 module TwentyTwo = {
 
-    let rec lottery : (~sampleCount: int, ~stack: array<'a>) => array<'a> =
-        (~sampleCount, ~stack) => {
+    let rec lottery : (~count: int, ~stack: array<'a>) => array<'a> =
+        (~count, ~stack) => {
 
             switch stack {
                 | [] => []
                 | [x] => [x]
                 | _ => 
-                    if (sampleCount > 0) {
+                    if (count > 0) {
                         let (winning_set, remaining) = Prelude.Array.pickRandom(stack)
                         winning_set
                             ->Js.Array.concat(
-                                lottery(~sampleCount=(sampleCount - 1), ~stack=remaining)
+                                lottery(~count=(count - 1), ~stack=remaining)
                             )
                     } else {
                         []
@@ -483,20 +483,22 @@ module TwentyThree = {
 
 module TwentyFour = {
     
-    let rec generateCombinations : (~stack: list<'a>, ~sampleCount: int) => list<list<'a>> = 
-        (~stack, ~sampleCount) => {
+    let rec combinations : (~stack: list<'a>, ~count: int) => list<list<'a>> = 
+        (~stack, ~count) => {
 
-            switch stack {
-                | list{} => list{}
-                | list{x} => list{list{x}}
-                | _ if (sampleCount < 1) => list{}
-                | _ if (sampleCount > stack->Prelude.List.length) => list{}
-                | stack if (sampleCount == stack->Prelude.List.length) => list{stack}
-                | list{head, ...rest} => 
-                    
-                    rest
-                        ->Belt.List.map(x => list{head, x})
-                        ->Belt.List.concat(generateCombinations(~stack=rest, ~sampleCount))
+            switch count {
+                | count if (count < 1) => list{list{}}
+                | count if (count > stack->Prelude.List.length) || (count == stack->Prelude.List.length) => list{stack}
+                | _ => 
+                    switch stack {
+                        | list{} => list{}
+                        | list{x} => list{list{x}}
+                        | list{head, ...rest} => 
+                        
+                            combinations(~stack=rest, ~count=(count-1))
+                                ->Belt.List.map(x => list{head, ...x})
+                                ->Belt.List.concat(combinations(~stack=rest, ~count))
+                    }
             }
         }
 }
