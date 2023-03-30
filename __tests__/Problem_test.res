@@ -226,9 +226,9 @@ test("generate combinations of k _distinct_ objects chosen from n elements of a 
 
     let list = list{"a","b","c","d","e","f"}
     
-    t->Assert.deepEqual(TwentyFour.combinations(~stack=list, ~count=10), list{list}, (), )
-    t->Assert.deepEqual(TwentyFour.combinations(~stack=list, ~count=-5), list{list{}}, (), )
-    t->Assert.deepEqual(TwentyFour.combinations(~stack=list, ~count=list->Prelude.List.length), list{list}, (), )
-    t->Assert.is(TwentyFour.combinations(~stack=list, ~count=2)->Prelude.List.length, 15, (), )
-    t->Assert.is(TwentyFour.combinations(~stack=list, ~count=5)->Prelude.List.length, 6, (), )
+    t->Assert.deepEqual(TwentyFour.group(~all=list, ~countPerGroup=10), list{list}, (), )
+    t->Assert.deepEqual(TwentyFour.group(~all=list, ~countPerGroup=-5), list{list{}}, (), )
+    t->Assert.deepEqual(TwentyFour.group(~all=list, ~countPerGroup=list->Prelude.List.length), list{list}, (), )
+    t->Assert.is(TwentyFour.group(~all=list, ~countPerGroup=2)->Prelude.List.length, 15, (), )
+    t->Assert.is(TwentyFour.group(~all=list, ~countPerGroup=5)->Prelude.List.length, 6, (), )
 })

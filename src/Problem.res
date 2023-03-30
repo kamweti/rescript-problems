@@ -483,21 +483,21 @@ module TwentyThree = {
 
 module TwentyFour = {
     
-    let rec combinations : (~stack: list<'a>, ~count: int) => list<list<'a>> = 
-        (~stack, ~count) => {
+    let rec group : (~all: list<'a>, ~countPerGroup: int) => list<list<'a>> = 
+        (~all, ~countPerGroup) => {
 
-            switch count {
-                | count if (count < 1) => list{list{}}
-                | count if (count > stack->Prelude.List.length) || (count == stack->Prelude.List.length) => list{stack}
+            switch countPerGroup {
+                | countPerGroup if (countPerGroup < 1) => list{list{}}
+                | countPerGroup if (countPerGroup > all->Prelude.List.length) || (countPerGroup == all->Prelude.List.length) => list{all}
                 | _ => 
-                    switch stack {
+                    switch all {
                         | list{} => list{}
                         | list{x} => list{list{x}}
                         | list{head, ...rest} => 
                         
-                            combinations(~stack=rest, ~count=(count-1))
+                            group(~all=rest, ~countPerGroup=(countPerGroup-1))
                                 ->Belt.List.map(x => list{head, ...x})
-                                ->Belt.List.concat(combinations(~stack=rest, ~count))
+                                ->Belt.List.concat(group(~all=rest, ~countPerGroup))
                     }
             }
         }
