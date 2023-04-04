@@ -508,14 +508,15 @@ module TwentyFive = {
     let group : (~all: list<'a>, ~combinationSizes: list<int>) => list<list<'a>> = 
         (~all, ~combinationSizes) => {
             
-            let rec pick = (list, count, accum) => {
+            let rec remove = (list, count) => {
+                
                 switch list {
-                    | list{} => accum
-                    | list{head, ...rest} => 
-                        if (count > 0) {
-                            pick(rest, count - 1, list{head, ...accum})
+                    | list{} => list{}
+                    | list{_, ...rest} => 
+                        if (count == 0) {
+                            list
                         } else {
-                            accum
+                            remove(rest, count - 1)
                         }
                 }
             }
@@ -524,10 +525,9 @@ module TwentyFive = {
                 switch (combinationSizes, all) {
                     | (list{}, _) => accum
                     | (list{n, ...ns}, all) => 
-
                         loop(
                             ns,
-                            pick(all, (all->Prelude.List.length - n), list{}),
+                            remove(all, n),
                             TwentyFour.combination(~size=n, ~all)
                                 ->Belt.List.concat(accum)
                         )
