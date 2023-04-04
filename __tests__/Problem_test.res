@@ -226,9 +226,31 @@ test("generate combinations of k _distinct_ objects chosen from n elements of a 
 
     let list = list{"a","b","c","d","e","f"}
     
-    t->Assert.deepEqual(TwentyFour.group(~all=list, ~countPerGroup=10), list{list}, (), )
-    t->Assert.deepEqual(TwentyFour.group(~all=list, ~countPerGroup=-5), list{list{}}, (), )
-    t->Assert.deepEqual(TwentyFour.group(~all=list, ~countPerGroup=list->Prelude.List.length), list{list}, (), )
-    t->Assert.is(TwentyFour.group(~all=list, ~countPerGroup=2)->Prelude.List.length, 15, (), )
-    t->Assert.is(TwentyFour.group(~all=list, ~countPerGroup=5)->Prelude.List.length, 6, (), )
+    t->Assert.deepEqual(TwentyFour.combination(~all=list, ~size=10), list{list}, (), )
+    t->Assert.deepEqual(TwentyFour.combination(~all=list, ~size=-5), list{list{}}, (), )
+    t->Assert.deepEqual(TwentyFour.combination(~all=list, ~size=list->Prelude.List.length), list{list}, (), )
+    t->Assert.is(TwentyFour.combination(~all=list, ~size=2)->Prelude.List.length, 15, (), )
+    t->Assert.is(TwentyFour.combination(~all=list, ~size=5)->Prelude.List.length, 6, (), )
 })
+
+test("group elements of a set into disjoint subsets", t => {
+
+    let list = list{"a","b","c","d","e","f","g","h","i"}
+
+    // in how many ways can a group of 9 things be divided in disjoint subgroups of 2,3,4 persons?
+    // the number of ways to divide a group of 9 people into 3 subgroups of 2, 3 and 4 people is C(9, 2) * C(7, 3) * C(4, 4). 
+    // This can be simplified to C(9, 2) * C(7, 3), 
+    // which is 36 * 35 which is 1260. 
+
+    let groupings = TwentyFive.group(~all=list, ~combinationSizes=list{2, 3, 4})
+
+    Js.log(groupings->Prelude.List.length)
+    // t->Assert.deepEqual(groupings)
+})
+
+
+// C(6, 2) = 15
+// C(4, 2) = 6
+// C(2, 2) = 1
+
+// 15 * 6 = 90

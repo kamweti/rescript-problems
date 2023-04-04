@@ -483,22 +483,57 @@ module TwentyThree = {
 
 module TwentyFour = {
     
-    let rec group : (~all: list<'a>, ~countPerGroup: int) => list<list<'a>> = 
-        (~all, ~countPerGroup) => {
+    let rec combination : (~all: list<'a>, ~size: int) => list<list<'a>> = 
+        (~all, ~size) => {
 
-            switch countPerGroup {
-                | countPerGroup if (countPerGroup < 1) => list{list{}}
-                | countPerGroup if (countPerGroup > all->Prelude.List.length) || (countPerGroup == all->Prelude.List.length) => list{all}
+            switch size {
+                | size if (size < 1) => list{list{}}
+                | size if (size > all->Prelude.List.length) || (size == all->Prelude.List.length) => list{all}
                 | _ => 
                     switch all {
                         | list{} => list{}
                         | list{x} => list{list{x}}
                         | list{head, ...rest} => 
                         
-                            group(~all=rest, ~countPerGroup=(countPerGroup-1))
+                            combination(~all=rest, ~size=(size-1))
                                 ->Belt.List.map(x => list{head, ...x})
-                                ->Belt.List.concat(group(~all=rest, ~countPerGroup))
+                                ->Belt.List.concat(combination(~all=rest, ~size))
                     }
             }
+        }
+}
+
+module TwentyFive = {
+    
+    let group : (~all: list<'a>, ~combinationSizes: list<int>) => list<list<'a>> = 
+        (~all, ~combinationSizes) => {
+            
+            let rec pick = (list, count, accum) => {
+                switch list {
+                    | list{} => accum
+                    | list{head, ...rest} => 
+                        if (count > 0) {
+                            pick(rest, count - 1, list{head, ...accum})
+                        } else {
+                            accum
+                        }
+                }
+            }
+
+            let rec loop = (combinationSizes, all, accum) => {
+                switch (combinationSizes, all) {
+                    | (list{}, _) => accum
+                    | (list{n, ...ns}, all) => 
+
+                        loop(
+                            ns,
+                            pick(all, (all->Prelude.List.length - n), list{}),
+                            TwentyFour.combination(~size=n, ~all)
+                                ->Belt.List.concat(accum)
+                        )
+                }
+            }
+
+            loop(combinationSizes, all, list{})
         }
 }
