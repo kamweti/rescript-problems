@@ -505,35 +505,39 @@ module TwentyFour = {
 
 module TwentyFive = {
     
-    let group : (~all: list<'a>, ~combinationSizes: list<int>) => list<list<'a>> = 
-        (~all, ~combinationSizes) => {
+    // method body blindly copied from https://github.com/shrynx/99.re/blob/master/src/p27.re
+    // todo: carefully refactor List lib calls to this to use Belt.List
+    let group : (~list: list<'a>, ~sizes: list<int>) => list<list<list<'a>>> = 
+        (~list, ~sizes) => {
             
-            let rec remove = (list, count) => {
+            // let initial = List.map(size => (size, list{}), sizes)
+            let initial = sizes->Belt.List.map(size => (size, list{}))
+            
+            let prepend = (p, list) => {
+                let emit = (l, acc) => list{l, ...acc}
+
                 
+                let rec aux = (emit, acc, list) =>
+                    switch list {
+                    | list{} => emit(list{}, acc)
+                    | list{(n, l) as h, ...t} =>
+                        let acc = n > 0 ? emit(list{(n - 1, list{p, ...l}), ...t}, acc) : acc
+                        aux((l, acc) => emit(list{h, ...l}, acc), acc, t)
+                    }
+
+                aux(emit, list{}, list)
+            }
+
+            let rec aux = (list) => {
                 switch list {
-                    | list{} => list{}
-                    | list{_, ...rest} => 
-                        if (count == 0) {
-                            list
-                        } else {
-                            remove(rest, count - 1)
-                        }
+                    | list{} => list{initial}
+                    | list{x, ...xs} => 
+                        List.concat(aux(xs)->Belt.List.map(prepend(x)))
                 }
             }
 
-            let rec loop = (combinationSizes, all, accum) => {
-                switch (combinationSizes, all) {
-                    | (list{}, _) => accum
-                    | (list{n, ...ns}, all) => 
-                        loop(
-                            ns,
-                            remove(all, n),
-                            TwentyFour.combination(~size=n, ~all)
-                                ->Belt.List.concat(accum)
-                        )
-                }
-            }
-
-            loop(combinationSizes, all, list{})
+            let all = aux(list)
+            let complete = List.filter(List.for_all(((x, _)) => x == 0), all)
+            List.map(List.map(snd), complete)
         }
 }

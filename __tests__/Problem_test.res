@@ -242,15 +242,7 @@ test("group elements of a set into disjoint subsets", t => {
     // This can be simplified to C(9, 2) * C(7, 3), 
     // which is 36 * 35 which is 1260. 
 
-    let groupings = TwentyFive.group(~all=list, ~combinationSizes=list{2, 3, 4})
+    let groupings = TwentyFive.group(~list=list, ~sizes=list{2, 3})
 
-    Js.log(groupings->Prelude.List.length)
-    // t->Assert.deepEqual(groupings)
+    t->Assert.is(groupings->Prelude.List.length, 1260, (), )
 })
-
-
-// C(6, 2) = 15
-// C(4, 2) = 6
-// C(2, 2) = 1
-
-// 15 * 6 = 90
