@@ -179,7 +179,7 @@ module Eleven = {
         | Many(int, 'a)
 
     let run_length_encode_modified = list => 
-        Ten.run_length_encode(list)->List.map(tuple => 
+        Ten.run_length_encode(list)->Belt.List.map(tuple => 
             switch tuple {
             | (1, x) => One(x)
             | (count, x) if (count > 1) => Many(count, x)
